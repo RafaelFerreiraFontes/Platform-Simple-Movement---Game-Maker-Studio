@@ -1,0 +1,44 @@
+//Get Player Inputs
+keyLeft = keyboard_check(vk_left);
+keyRight = keyboard_check(vk_right);
+keyJump = keyboard_check(ord("Z"));
+
+//Calculate Movement:
+var move = keyRight - keyLeft;
+
+//Check if Player is On Floor:
+isOnFloor = place_meeting(x,y + 1,oSolid);
+
+//Calculate horizontal speed:
+hsp = move * walkForce;
+
+//Calculate vertical speed:
+vsp += grav;
+
+if(keyJump and isOnFloor)
+{
+  vsp = -jumpForce;
+}
+
+//Horizontal Collision Check
+if(place_meeting(x + hsp,y,oSolid))
+{
+   while(!place_meeting(x + sign(hsp),y,oSolid))
+   {
+     x += sign(hsp);
+   }
+   hsp = 0;
+}
+x += hsp;
+
+//Vertical Collision Check
+if(place_meeting(x,y + vsp,oSolid))
+{
+   while(!place_meeting(x,y + sign(vsp),oSolid))
+   {
+     y += sign(vsp);
+   }
+   vsp = 0;
+}
+y += vsp;
+
